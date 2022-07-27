@@ -1,0 +1,38 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 6.32.9
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'pnpm'
+      - name: Install deps
+        run: |
+          pnpm install --frozen-lockfile
+      - name: Build static pages
+        run: |
+          pnpm build
+      - name: Push content
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: gh-pages
+          build_dir: out
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
