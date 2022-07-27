@@ -1,5 +1,5 @@
 {
-  "name": "flows-app",
+  "name": "liquidsoap-flows-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
