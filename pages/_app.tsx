@@ -1,19 +1,28 @@
-import '@flows/styles/globals.css'
-import { Disclosure } from '@headlessui/react'
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
-import type { AppProps } from 'next/app'
+import "@flows/styles/globals.css"
+import { Disclosure } from "@headlessui/react"
+import { MenuIcon, XIcon } from "@heroicons/react/outline"
+import { SWRConfig } from "swr"
+import Script from "next/script"
+import type { AppProps } from "next/app"
+import { apiQuery } from "@flows/lib/api"
+
+const ApiSWRConfig = ({ children }: { children: React.ReactNode }) => {
+  const fetcher = (path: string) => apiQuery(path, { method: "GET" })
+
+  return <SWRConfig value={{ fetcher }}>{children}</SWRConfig>
+}
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-  { name: 'Reports', href: '#', current: false },
+  { name: "Dashboard", href: "#", current: true },
+  { name: "Team", href: "#", current: false },
+  { name: "Projects", href: "#", current: false },
+  { name: "Calendar", href: "#", current: false },
+  { name: "Reports", href: "#", current: false },
 ]
 
-const classNames = (...classes: unknown[]) => classes.filter(Boolean).join(' ')
+const classNames = (...classes: unknown[]) => classes.filter(Boolean).join(" ")
 
-const FlowsApp = ({ Component, pageProps }: AppProps) => (
+const Template = ({ Component, pageProps }: AppProps) => (
   <div className='min-h-full'>
     <Disclosure as='nav' className='bg-gray-800'>
       {({ open }) => (
@@ -35,10 +44,10 @@ const FlowsApp = ({ Component, pageProps }: AppProps) => (
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'px-3 py-2 rounded-md text-sm font-medium'
+                          item.current ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "px-3 py-2 rounded-md text-sm font-medium"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </a>
@@ -68,10 +77,10 @@ const FlowsApp = ({ Component, pageProps }: AppProps) => (
                   as='a'
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block px-3 py-2 rounded-md text-base font-medium'
+                    item.current ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block px-3 py-2 rounded-md text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -93,6 +102,15 @@ const FlowsApp = ({ Component, pageProps }: AppProps) => (
       </div>
     </main>
   </div>
+)
+
+const FlowsApp = (props: AppProps) => (
+  <>
+    <Script src='/__ENV.js' strategy='beforeInteractive' />
+    <ApiSWRConfig>
+      <Template {...props} />
+    </ApiSWRConfig>
+  </>
 )
 
 export default FlowsApp
