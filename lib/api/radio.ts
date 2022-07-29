@@ -18,4 +18,4 @@ export type Radio = {
   streams: Stream[]
 }
 
-export const useRadios = () => useApiQuery<Radio[]>("/radio")
+export const useRadios = () => useApiQuery<Radio[]>("/radios")
