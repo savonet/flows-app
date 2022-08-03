@@ -8,7 +8,6 @@ export type Stream = {
 }
 
 export type Radio = {
-  id: string
   name: string
   website: string
   description: string

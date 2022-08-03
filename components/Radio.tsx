@@ -11,8 +11,8 @@ export default function Radio({ radio }: { radio: Radio }) {
       <div>
         Listen:
         <ul>
-          {radio.streams.map(({ url, format }, idx) => (
-            <a className='underline' href={url} target='_blank' key={idx} rel='noreferrer'>
+          {radio.streams.map(({ url, format }) => (
+            <a className='underline' href={url} target='_blank' key={`${url}-${format}`} rel='noreferrer'>
               {format}
             </a>
           ))}
