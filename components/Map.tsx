@@ -43,12 +43,7 @@ const saveBounds = (map: google.maps.Map | undefined, setBounds: (_: Bounds) => 
 
   if (!bounds) return
 
-  setBounds({
-    north: bounds.getNorthEast().lat(),
-    east: bounds.getNorthEast().lng(),
-    south: bounds.getSouthWest().lat(),
-    west: bounds.getSouthWest().lng(),
-  })
+  setBounds(bounds.toJSON())
 }
 
 const saveZoom = (map: google.maps.Map | undefined, setZoom: (_: number) => void) => {
@@ -68,10 +63,7 @@ const saveCenter = (map: google.maps.Map | undefined, setCenter: (_: Position) =
 
   if (!center) return
 
-  setCenter({
-    lat: center.lat(),
-    lng: center.lng(),
-  })
+  setCenter(center.toJSON())
 }
 
 type MapProps = {

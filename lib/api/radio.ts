@@ -29,7 +29,9 @@ export type Radios = {
 
 export const useRadios = () => {
   const { bounds } = useSearch()
-  const boundsParams = bounds ? `?north=${bounds.north}&east=${bounds.east}&south=${bounds.south}&west=${bounds.west}` : ""
+  const boundsParams = bounds
+    ? `?north=${bounds.north}&east=${bounds.east}&south=${bounds.south}&west=${bounds.west}`
+    : ""
   const debouncedParams = useDebounce(boundsParams, 200)
   return useApiQuery<Radios>(`/radios${debouncedParams}`)
 }
