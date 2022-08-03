@@ -12,7 +12,7 @@ export default function Radio({ radio }: { radio: Radio }) {
         Listen:
         <ul>
           {radio.streams.map(({ url, format }, idx) => (
-            <a className='underline' href={url} target='_blank' key={idx} rel="noreferrer">
+            <a className='underline' href={url} target='_blank' key={idx} rel='noreferrer'>
               {format}
             </a>
           ))}
