@@ -12,8 +12,8 @@ export default function Radios() {
 
   return (
     <div className={`grid ${colCount} gap-4 py-4 px-6`}>
-      {radios.map((radio, idx) => (
-        <Radio radio={radio} key={idx} />
+      {radios.map(radio => (
+        <Radio radio={radio} key={radio.id} />
       ))}
     </div>
   )
