@@ -4,7 +4,7 @@ import { useState, useCallback } from "react"
 import { useSearch, type Position, type Bounds } from "@flows/lib/useSearch"
 
 const containerStyle = {
-  width: "1200px",
+  width: "100%",
   height: "500px",
 }
 
