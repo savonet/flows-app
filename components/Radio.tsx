@@ -73,9 +73,14 @@ const Stream = ({ radio, stream }: { radio: Radio; stream: Stream }) => {
         customControlsSection={[RHAP_UI.MAIN_CONTROLS]}
         style={{ padding: "none", boxShadow: "none" }}
       />
-      <span className='text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-slate-600 bg-slate-200 uppercase last:mr-0 mr-1'>
+      <a
+        href={stream.url}
+        target='_blank'
+        className='text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-slate-600 bg-slate-200 uppercase last:mr-0 mr-1'
+        rel='noreferrer'
+      >
         {stream.format}
-      </span>
+      </a>
     </div>
   )
 }
