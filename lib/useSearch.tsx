@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useState, ReactNode 
 import { useRouter, type NextRouter } from "next/router"
 import { type ParsedUrlQueryInput } from "querystring"
 import deepEqual from "deep-equal"
+import { type Radio, type Stream } from "@flows/lib/utils"
 
 export type Bounds = {
   north: number
@@ -15,6 +16,11 @@ export type Position = {
   lng: number
 }
 
+export type IsPlaying = {
+  stream: Stream
+  radio: Radio
+}
+
 type SearchContextType = {
   isLoaded: boolean
   bounds: Bounds | undefined
@@ -23,6 +29,8 @@ type SearchContextType = {
   setZoom: (_: number, navigate?: boolean) => void
   center: Position
   setCenter: (_: Position, navigate?: boolean) => void
+  isPlaying: IsPlaying | undefined
+  setIsPlaying: (_: IsPlaying | undefined) => void
 }
 
 export const INITIAL_CENTER: google.maps.LatLngLiteral = {
@@ -63,6 +71,7 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
   const [zoom, setZoomState] = useState<number>(INITIAL_ZOOM)
   const [center, setCenterState] = useState<Position>(INITIAL_CENTER)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isPlaying, setIsPlaying] = useState<IsPlaying | undefined>()
   const router = useRouter()
 
   const setBounds = useCallback(
@@ -136,7 +145,9 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
   }, [isLoaded, setIsLoaded, router, center, setCenter, zoom, setZoom])
 
   return (
-    <SearchContext.Provider value={{ isLoaded, bounds, setBounds, center, setCenter, zoom, setZoom }}>
+    <SearchContext.Provider
+      value={{ isLoaded, bounds, setBounds, center, setCenter, zoom, setZoom, isPlaying, setIsPlaying }}
+    >
       {children}
     </SearchContext.Provider>
   )

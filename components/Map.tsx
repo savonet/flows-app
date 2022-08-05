@@ -1,6 +1,7 @@
 import { Marker, GoogleMap, useLoadScript } from "@react-google-maps/api"
-import { useRadios, type Radio } from "@flows/lib/api/radio"
+import { useRadios } from "@flows/lib/api/radio"
 import { useState, useCallback } from "react"
+import { type Radio } from "@flows/lib/utils"
 import { useSearch, type Position, type Bounds } from "@flows/lib/useSearch"
 
 const containerStyle = {

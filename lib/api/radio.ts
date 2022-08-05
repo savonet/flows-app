@@ -1,24 +1,6 @@
 import { useApiQuery } from "."
 import { useSearch } from "@flows/lib/useSearch"
-import { useDebounce } from "@flows/lib/utils"
-
-export type Stream = {
-  format: string
-  url: string
-}
-
-export type Radio = {
-  name: string
-  website?: string
-  description?: string
-  genre?: string
-  logo?: string
-  longitude?: number
-  latitude?: number
-  artist?: string
-  title?: string
-  streams: Stream[]
-}
+import { useDebounce, type Radio } from "@flows/lib/utils"
 
 export type Radios = {
   total: number
