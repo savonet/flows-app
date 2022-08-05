@@ -61,9 +61,10 @@ const Stream = ({ radio, stream }: { radio: Radio; stream: Stream }) => {
     <div className='flex flex-col items-center pb-4'>
       <AudioPlayer
         src={stream.url}
+        preload='none'
         ref={player}
         onPlay={() => setIsPlaying({ stream, radio })}
-        crossOrigin="anonymous"
+        crossOrigin='anonymous'
         showJumpControls={false}
         showDownloadProgress={false}
         showFilledProgress={false}
