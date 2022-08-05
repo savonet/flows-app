@@ -9,13 +9,14 @@ export type Stream = {
 
 export type Radio = {
   name: string
-  website: string
-  description: string
-  genre: string
-  longitude: number
-  latitude: number
-  artist: string
-  title: string
+  website?: string
+  description?: string
+  genre?: string
+  logo?: string
+  longitude?: number
+  latitude?: number
+  artist?: string
+  title?: string
   streams: Stream[]
 }
 

@@ -5,7 +5,7 @@ import { useSearch, type Position, type Bounds } from "@flows/lib/useSearch"
 
 const containerStyle = {
   width: "100%",
-  height: "500px",
+  height: "600px",
 }
 
 const API_KEY = "AIzaSyAyI_VGiugs-XG_1fEW-03hzIaVRMnHwP4"
