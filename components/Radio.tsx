@@ -63,6 +63,7 @@ const Stream = ({ radio, stream }: { radio: Radio; stream: Stream }) => {
         src={stream.url}
         ref={player}
         onPlay={() => setIsPlaying({ stream, radio })}
+        crossOrigin="anonymous"
         showJumpControls={false}
         showDownloadProgress={false}
         showFilledProgress={false}
