@@ -1,8 +1,6 @@
 import { type Radio, type Stream } from "@flows/lib/utils"
-import { useEffect, useRef } from "react"
-import { useSearch } from "@flows/lib/useSearch"
-import AudioPlayer, { RHAP_UI } from "react-h5-audio-player"
-import "react-h5-audio-player/lib/styles.css"
+import { useCallback } from "react"
+import { useAudioContext } from "@flows/lib/useAudioContext"
 
 const grids: { [_: number]: string } = {
   1: "grid-cols-1",
@@ -10,69 +8,57 @@ const grids: { [_: number]: string } = {
   3: "grid-cols-3",
 }
 
-export const createSyntheticEvent = <T extends Element, E extends Event>(event: E): React.SyntheticEvent<T, E> => {
-  let isDefaultPrevented = false
-  let isPropagationStopped = false
-  const preventDefault = () => {
-    isDefaultPrevented = true
-    event.preventDefault()
-  }
-  const stopPropagation = () => {
-    isPropagationStopped = true
-    event.stopPropagation()
-  }
-  return {
-    nativeEvent: event,
-    currentTarget: event.currentTarget as EventTarget & T,
-    target: event.target as EventTarget & T,
-    bubbles: event.bubbles,
-    cancelable: event.cancelable,
-    defaultPrevented: event.defaultPrevented,
-    eventPhase: event.eventPhase,
-    isTrusted: event.isTrusted,
-    preventDefault,
-    isDefaultPrevented: () => isDefaultPrevented,
-    stopPropagation,
-    isPropagationStopped: () => isPropagationStopped,
-    persist: () => undefined,
-    timeStamp: event.timeStamp,
-    type: event.type,
-  }
-}
+const playIcon = (
+  <svg
+    className='h-5 w-5 fill-neutral-900 group-hover:fill-neutral-500 stroke-neutral-900 group-hover:stroke-neutral-500'
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    stroke-width='2'
+    stroke-linecap='round'
+    stroke-linejoin='round'
+  >
+    <polygon points='5 3 19 12 5 21 5 3' />
+  </svg>
+)
 
-const Stream = ({ radio, stream }: { radio: Radio; stream: Stream }) => {
-  const player = useRef<AudioPlayer>(null)
-  const { isPlaying, setIsPlaying } = useSearch()
+const pauseIcon = (
+  <svg
+    className='h-5 w-5 fill-neutral-900 group-hover:fill-neutral-500 stroke-neutral-900 group-hover:stroke-neutral-500'
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth='3'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+  >
+    <line x1='6' y1='19' x2='6' y2='5' />
+    <line x1='17' y1='5' x2='17' y2='19' />
+  </svg>
+)
 
-  useEffect(() => {
-    if (!player.current) return
-    if (isPlaying && stream.id === isPlaying.stream.id) return
+const Stream = ({ stream }: { stream: Stream }) => {
+  const { paused, play, playing, toggle } = useAudioContext()
 
-    if (player.current.isPlaying()) {
-      // 💩
-      const event = new Event("change", { bubbles: true })
-      Object.defineProperty(event, "target", { writable: false, value: player.current.audio.current })
-      const syntheticEvent = createSyntheticEvent(event) as React.ChangeEvent<typeof player.current.audio.current>
-      player.current.togglePlay(syntheticEvent)
-    }
-  }, [player, isPlaying, stream])
+  const onClick = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      e.preventDefault()
+
+      if (playing?.id === stream.id) return toggle()
+
+      play(stream)
+    },
+    [play, playing, stream, toggle]
+  )
 
   return (
     <div className='flex flex-col items-center pb-4'>
-      <AudioPlayer
-        src={stream.url}
-        preload='none'
-        ref={player}
-        onPlay={() => setIsPlaying({ stream, radio })}
-        crossOrigin='anonymous'
-        showJumpControls={false}
-        showDownloadProgress={false}
-        showFilledProgress={false}
-        hasDefaultKeyBindings={false}
-        customProgressBarSection={[]}
-        customControlsSection={[RHAP_UI.MAIN_CONTROLS]}
-        style={{ padding: "none", boxShadow: "none" }}
-      />
+      <button
+        className='flex items-center justify-center group rounded-full w-8 h-8 ring-2 ring-gray-100'
+        onClick={onClick}
+      >
+        {playing?.id === stream.id && !paused ? pauseIcon : playIcon}
+      </button>
       <a
         href={stream.url}
         target='_blank'
@@ -102,7 +88,7 @@ export default function Radio({ radio }: { radio: Radio }) {
           } justify-items-center space-x-0.5 gap-4 py-4 px-6`}
         >
           {radio.streams.map(stream => (
-            <Stream radio={radio} stream={stream} key={stream.id} />
+            <Stream stream={stream} key={stream.id} />
           ))}
         </div>
       </div>

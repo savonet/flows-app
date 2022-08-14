@@ -19,8 +19,7 @@ const HttpWarning = () => {
         className='w-3/4 bg-orange-100 border border-orange-400 text-orange-700 pl-4 pr-9 py-3 rounded relative'
         role='warning'
       >
-        <strong className='font-bold'>Warning!</strong>
-        {" "}
+        <strong className='font-bold'>Warning!</strong>{" "}
         <span className='block sm:inline'>
           You are viewing the https version of this page, which may prevent some radios from playing. Feel free to visit
           the http version of the page at <a href={httpLocation}>{httpLocation}</a>

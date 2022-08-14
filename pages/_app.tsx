@@ -6,6 +6,7 @@ import Script from "next/script"
 import type { AppProps } from "next/app"
 import { apiQuery } from "@flows/lib/api"
 import { SearchProvider } from "@flows/lib/useSearch"
+import { AudioProvider } from "@flows/lib/useAudioContext"
 
 const ApiSWRConfig = ({ children }: { children: React.ReactNode }) => {
   const fetcher = (path: string) => apiQuery(path, { method: "GET" })
@@ -131,9 +132,11 @@ const FlowsApp = (props: AppProps) => (
   <>
     <Script src='/__ENV.js' strategy='beforeInteractive' />
     <ApiSWRConfig>
-      <SearchProvider>
-        <Template {...props} />
-      </SearchProvider>
+      <AudioProvider>
+        <SearchProvider>
+          <Template {...props} />
+        </SearchProvider>
+      </AudioProvider>
     </ApiSWRConfig>
   </>
 )
